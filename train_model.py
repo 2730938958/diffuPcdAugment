@@ -39,7 +39,7 @@ def collate_fn_padd(batch):
 
 
 ### dataset
-dataset_root = '/hy-tmp/generated'
+dataset_root = '/hy-tmp/merged'
 with open('config.yaml', 'r') as fd:
     config = yaml.load(fd, Loader=yaml.FullLoader)
 
@@ -95,6 +95,7 @@ def test(model, tensor_loader, criterion1, criterion2, device):
 def train(model, train_loader, test_loader, num_epochs, learning_rate, train_criterion, test_criterion, device):
     optimizer = torch.optim.SGD(model.parameters(), lr = learning_rate)
     scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer,milestones=[20,40],gamma=0.1)
+    # scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer,milestones=[15,35],gamma=0.1)
     parameter_dir = './pre-train_weights/best_point_transformers.pth'
     best_test_mpjpe = 100
     for epoch in range(num_epochs):
@@ -138,10 +139,10 @@ if not os.path.exists('./pre-train_weights'):
 train_criterion = nn.MSELoss()
 test_criterion = error
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# model.load_state_dict(torch.load('./pre-train_weights/lidar_p1_random.pt'))
+# model.load_state_dict(torch.load('./pre-train_weights/best_point_transformers.pth'))
 model.to(device)
 train(
-    model=model,
+    model = model,
     train_loader= train_loader,
     test_loader= val_loader,
     num_epochs= 50,
