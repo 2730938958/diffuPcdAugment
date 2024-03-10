@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
-from pointnet_util import PointNetFeaturePropagation, PointNetSetAbstraction
-from pointnet_util import index_points, square_distance
+from utils.pointnet_util import PointNetFeaturePropagation, PointNetSetAbstraction
+from utils.pointnet_util import index_points, square_distance
 import torch.nn.functional as F
 import numpy as np
 

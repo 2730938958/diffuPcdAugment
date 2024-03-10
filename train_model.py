@@ -1,15 +1,12 @@
 import torch
 import torch.nn as nn
 import yaml
-import glob
-import scipy.io as scio
-import random
 import numpy as np
 import os
 from tqdm import tqdm
-from evaluate import error
-from mmfi import make_dataset, make_dataloader
-from lidar_point_transformer import PointTransformerReg
+from mmfi_lib.evaluate import error
+from mmfi_lib.mmfi import make_dataset, make_dataloader
+from model.lidar_point_transformer import PointTransformerReg
 
 def collate_fn_padd(batch):
     '''
@@ -40,7 +37,7 @@ def collate_fn_padd(batch):
 
 ### dataset
 dataset_root = '/hy-tmp/merged'
-with open('config.yaml', 'r') as fd:
+with open('configs/config.yaml', 'r') as fd:
     config = yaml.load(fd, Loader=yaml.FullLoader)
 
 train_dataset, val_dataset = make_dataset(dataset_root, config)
@@ -58,7 +55,7 @@ val_loader = make_dataloader(val_dataset, is_training=False, generator=rng_gener
 #         break
 
 ### model
-with open('model_config.yaml', 'r') as fd:
+with open('configs/model_config.yaml', 'r') as fd:
         model_cfg = yaml.load(fd, Loader=yaml.FullLoader)
 lidar_cfg = model_cfg['lidar']
 model = PointTransformerReg(lidar_cfg)
